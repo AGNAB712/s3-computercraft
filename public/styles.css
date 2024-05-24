@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
+body {
+  font-family: 'Source Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #262626;
+  color: #dccbcb;
+}
+
+.container {
+  max-width: calc(70vw - 50px);
+  margin: 50px 0px 50px 30vw;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin: 0;
+}
+a {
+  background-color: #1e1d1d;
+  color: #dccbcb;
+  text-decoration: none;
+  margin: 5px;
+  padding: 10px;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+#list {
+  display: block;
+  text-align: left;
+  margin-left: 30px;
+}
+#list a {
+  background-color: #161515;
+  color: #dccbcb;
+  text-decoration: none;
+  margin: 5px;
+  padding: 10px;
+  display: inline-block;
+  border-radius: 5px;
+}
+#list a:hover {
+  color: white;
+}
+.indent {
+  margin-left: 20px !important;
+}
+.list-group {
+  max-width: 300px;
+  background-color: #1b1a1a;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.language-lua {
+  border-radius: 15px;
+  background-color: #222 !important;
+  text-shadow: 0 1px #282828 !important;
+  position: relative;
+  color: white !important;
+}
+.operator {
+  background-color: transparent !important;
+}
+#lua-copy-image {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+.no {
+  color: crimson;
+}
+
+aside {
+  text-align: center;
+  width: 25vw;
+  background-color: #1e1d1d;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
