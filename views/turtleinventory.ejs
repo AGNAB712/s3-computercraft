@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redstone</title>
+  <title>Inventory</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-lua.min.js"></script>
@@ -11,29 +11,34 @@
 </head>
 <body>
   <div class="container">
-    <h1>Redstone</h1>
-    <h2>What is this section about?</h2>
-    <p>This section is about interacting with redstone using ComputerCraft.</p>
+    <h1>Inventory</h1>
+    <p>Every turtle has a 16 slot inventory which you can see on the right side. The active slot is the slot with the border around it.</p> 
     <br>
-
-    <h2>Inventory-specific functions:</h2>
-
-    <h3>setOutput(side, on)</h3>
-    <p>Sets the redstone output of one of the sides of the computer</p><br>
-    <p>Parameters:</p>
-    <p>- side: "top", "bottom", "left", "right", "front" and "back"</p>
-    <p>- on: boolean, either true for on or false for off</p>
+    <h2>Turtle inventory-specific functions:</h2>
+    <h3>suck(count), suckUp(count), suckDown(count)</h3>
+    <p>Takes an item from the inventory/ground in front of, above, or below the turtle</p>
+    <p>Parameters</p>
+    <p>- count: The amount to drop</p>
     <br>
-    <h3>getInput(side)</h3>
-    <p>Gets the redstone output of one of the sides of the computer and returns a boolean (false for off, true for on)</p><br>
-    <p>Parameters:</p>
-    <p>- side: "top", "bottom", "left", "right", "front" and "back"</p>
+    <h3>select(slot)</h3>
+    <p>Change the selected slot</p>
+    <p>Parameters</p>
+    <p>- slot: The index of the slot to change to</p>
     <br>
+    <h3>getItemCount(slot)</h3>
+    <p>Gets the amount of items in the slot provided</p>
+    <p>Parameters</p>
+    <p>- slot: (Optional: uses active slot if blank) The index of the slot to change to</p>
+    <br>
+    <h3>drop(count), dropUp(count), dropDown(count)</h3>
+    <p>Drop the currently selected stack into the inventory in front of/above/below the turtle, or as an item into the world if there is no inventory</p>
+    <p>Parameters</p>
+    <p>- count: The amount to drop</p>
 
 
     <%- sidebar %>
 
-    <a href="https://tweaked.cc/module/redstone.html" target="_blank">Click here to learn more on tweaked.cc</a>
+    <a href="https://tweaked.cc/module/turtle.html" target="_blank">Click here to learn more on tweaked.cc</a>
   </div>
 
 <script>

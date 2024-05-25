@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redstone</title>
+  <title>Movement</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-lua.min.js"></script>
@@ -11,29 +11,19 @@
 </head>
 <body>
   <div class="container">
-    <h1>Redstone</h1>
-    <h2>What is this section about?</h2>
-    <p>This section is about interacting with redstone using ComputerCraft.</p>
+    <h1>Movement</h1>
+    <p>Up, down, left, right, there's no limit to where turtles can go</p> 
     <br>
-
-    <h2>Inventory-specific functions:</h2>
-
-    <h3>setOutput(side, on)</h3>
-    <p>Sets the redstone output of one of the sides of the computer</p><br>
-    <p>Parameters:</p>
-    <p>- side: "top", "bottom", "left", "right", "front" and "back"</p>
-    <p>- on: boolean, either true for on or false for off</p>
+    <h2>Movement-specific functions:</h2>
+    <h3>forward(), back(), up(), down()</h3>
+    <p>Moves the turtle once in its respective direction</p>
     <br>
-    <h3>getInput(side)</h3>
-    <p>Gets the redstone output of one of the sides of the computer and returns a boolean (false for off, true for on)</p><br>
-    <p>Parameters:</p>
-    <p>- side: "top", "bottom", "left", "right", "front" and "back"</p>
-    <br>
-
+    <h3>turnLeft(), turnRight()</h3>
+    <p>Turn 90 degrees in the respective direction</p>
 
     <%- sidebar %>
 
-    <a href="https://tweaked.cc/module/redstone.html" target="_blank">Click here to learn more on tweaked.cc</a>
+    <a href="https://tweaked.cc/module/turtle.html" target="_blank">Click here to learn more on tweaked.cc</a>
   </div>
 
 <script>

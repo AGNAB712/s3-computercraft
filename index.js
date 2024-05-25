@@ -18,6 +18,9 @@ app.use((req, res, next) => {
 
 <div id="list"> <!--- i could not figure out lists --->
 
+<a href='/first-program'>Your first program</a> <br>
+<a href='/events'>Events</a> <br>
+<a href='/displays'>Displays</a> <br>
 <div class="list-group">
 <a href='/peripherals'>Peripherals</a> <br>
 <a href='/peripherals/speaker' class="indent">Speakers</a> <br>
@@ -26,10 +29,15 @@ app.use((req, res, next) => {
 <a href='/peripherals/inventory' class="indent">Inventories</a> <br>
 <a href='/peripherals/redstone' class="indent">Redstone</a> <br>
 </div>
+<div class="list-group">
+<a href='/turtles'>Turtles</a> <br>
+<a href='/turtles/refueling' class="indent">Refueling</a> <br>
+<a href='/turtles/movement' class="indent">Movement</a> <br>
+<a href='/turtles/inventory' class="indent">Inventory</a> <br>
+</div>
 <a href='/pocket-computers'>Pocket Computers</a> <br>
-<a href='/pocket-computers'>Turtles</a> <br>
-<a href='/pocket-computers'>World Wide Web</a> <br>
-<a href='/pocket-computers'>GPS</a> <br>
+<a href='/www'>World Wide Web</a> <br>
+<a href='/gps'>GPS</a> <br>
 
 </div>
 </aside>`;
@@ -54,6 +62,20 @@ app.get('/peripherals/inventory', (req, res) => {
 app.get('/peripherals/redstone', (req, res) => {
   res.render('redstone.ejs', { sidebar: res.locals.sidebar });
 });
+
+app.get('/turtles', (req, res) => {
+  res.render('turtles.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/turtles/refueling', (req, res) => {
+  res.render('refueling.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/turtles/movement', (req, res) => {
+  res.render('movement.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/turtles/inventory', (req, res) => {
+  res.render('turtleinventory.ejs', { sidebar: res.locals.sidebar });
+});
+
 
 const PORT = 3000;
 app.listen(PORT, () => {

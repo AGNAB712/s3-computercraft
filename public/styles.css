@@ -57,6 +57,7 @@ a {
   background-color: #1b1a1a;
   border-radius: 5px;
   padding: 5px;
+  margin-top: 10px;
 }
 
 .language-lua {
@@ -89,4 +90,5 @@ aside {
   height: 100vh;
   top: 0;
   left: 0;
+  overflow-y: scroll;
 }
