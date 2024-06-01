@@ -1,5 +1,37 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const puppeteer = require('puppeteer');
+
+let page
+
+async function startBrowser() {
+  let browser;
+  try {
+    console.log("Opening the browser...");
+    browser = await puppeteer.launch({
+      headless: true,
+      ignoreDefaultArgs: ["--disable-extensions"],
+      args: [
+        "--no-sandbox",
+        "--use-gl=egl",
+        "--disable-setuid-sandbox",
+      ],
+      ignoreHTTPSErrors: true,
+    });
+  } catch (err) {
+    console.log("Could not create a browser instance => : ", err);
+  }
+  return browser;
+}
+
+async function startPuppeteer() {
+  const browser = startBrowser()
+  page = await browser.newPage();
+  await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36")
+  await page.goto('https://google.com');
+  console.log('puppeteer up and running Letsa go')
+}
+startPuppeteer()
 
 const app = express();
 
@@ -34,6 +66,12 @@ app.use((req, res, next) => {
 <a href='/turtles/refueling' class="indent">Refueling</a> <br>
 <a href='/turtles/movement' class="indent">Movement</a> <br>
 <a href='/turtles/inventory' class="indent">Inventory</a> <br>
+<div class="list-group-2">
+<a href='/turtles/peripherals' class="indent">Peripherals</a> <br>
+<a href='/turtles/crafting' class="indent-2">Crafting</a> <br>
+<a href='/turtles/speaker' class="indent-2">Speakers</a> <br>
+<a href='/turtles/world-interaction' class="indent-2">World interaction</a> <br>
+</div>
 </div>
 <a href='/pocket-computers'>Pocket Computers</a> <br>
 <a href='/www'>World Wide Web</a> <br>
@@ -74,6 +112,26 @@ app.get('/turtles/movement', (req, res) => {
 });
 app.get('/turtles/inventory', (req, res) => {
   res.render('turtleinventory.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/turtles/peripherals', (req, res) => {
+  res.render('turtleperipherals.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/turtles/crafting', (req, res) => {
+  res.render('turtlecrafting.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/turtles/speaker', (req, res) => {
+  res.render('turtlespeaker.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/turtles/world-interaction', (req, res) => {
+  res.render('worldinteraction.ejs', { sidebar: res.locals.sidebar });
+});
+
+
+app.get('/getFrame', async (req, res) => {
+  const screenshot = await page.screenshot();
+
+  res.set('Content-Type', 'image/png');
+  res.send(screenshot);
 });
 
 

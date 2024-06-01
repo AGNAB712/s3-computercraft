@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Turtles</title>
+  <title>Crafting</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-lua.min.js"></script>
@@ -11,14 +11,16 @@
 </head>
 <body>
   <div class="container">
-    <h1>Turtles</h1>
-    <p>Turtles are basically moving computers! They can interact with the world by placing blocks, breaking blocks, crafting, interacting with entities, and more! The best resource to learn about turtles is from tweaked.cc, but if you prefer a video format, Sethbling has a great series on them. This quest line will guide you through the basics, but these are great references to have!</p>
-
+    <h1>Crafting</h1>
+    <p>Crafting with turtles is relatively easy. There are just a few things that you have to know.</p>
+    <p>1. Crafting with turtles requires you to have a crafting table equipped in one of the slots of the turtles</p>
+    <p>2. To craft an item, you must have all ingredients in a 3x3 in slots 1-3, 5-7, and 9-11 and no other ingredients in any other slot. The diagram below shows a valid setup</p>
+    <img src="/img/craft_diagram.png" class="image-diagram" alt="Crafting image" onclick="copyText()">
+    <p>Calling "turtle.craft()" here would put a diamond sword in slot 1</p>
     <br>
 
     <%- sidebar %>
 
-    <a href="https://www.youtube.com/watch?v=DSsx4VSe-Uk" target="_blank">Click here for sethbling's turtle series</a>
     <a href="https://tweaked.cc/module/turtle.html" target="_blank">Click here to learn more on tweaked.cc</a>
   </div>
 

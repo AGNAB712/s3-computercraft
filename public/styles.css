@@ -52,9 +52,19 @@ a {
 .indent {
   margin-left: 20px !important;
 }
+.indent-2 {
+  margin-left: 40px !important;
+}
 .list-group {
   max-width: 300px;
   background-color: #1b1a1a;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 10px;
+}
+.list-group-2 {
+  max-width: 300px;
+  background-color: #171717;
   border-radius: 5px;
   padding: 5px;
   margin-top: 10px;
@@ -80,6 +90,10 @@ a {
 }
 .no {
   color: crimson;
+}
+.image-diagram {
+  border-radius: 10px;
+  border: 10px solid #222;
 }
 
 aside {

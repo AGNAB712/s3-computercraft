@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Turtles</title>
+  <title>Peripherals</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-lua.min.js"></script>
@@ -11,14 +11,19 @@
 </head>
 <body>
   <div class="container">
-    <h1>Turtles</h1>
-    <p>Turtles are basically moving computers! They can interact with the world by placing blocks, breaking blocks, crafting, interacting with entities, and more! The best resource to learn about turtles is from tweaked.cc, but if you prefer a video format, Sethbling has a great series on them. This quest line will guide you through the basics, but these are great references to have!</p>
-
+    <h1>Peripherals</h1>
+    <p>Turtles by themselves are relatively limited in how they can interact with the world. Thankfully, turtles have a way to equip <strong>tools</strong> and <strong>peripherals</strong>. Tools and peripherals can be equipped into either the turtle's left or right slot, using equipLeft and equipRight.</p> 
     <br>
+    <h2>Turtle peripheral-specific functions:</h2>
+    <h3>equipLeft(), equipRight()</h3>
+    <p>Equip (or unequip) an item/peripheral on the left or right side of the terminal.</p>
+    <p>Calling this function will attempt to equip whatever item is in the selected slot. If the slot is empty, the turtle will unequip the slot and place the equipped item into its active slot.</p>
+    <br>
+    <h3>Multiple other special functions can be called from the turtle via peripherals/tools, but they will be gone over in their respective chapters</h3>
+
 
     <%- sidebar %>
 
-    <a href="https://www.youtube.com/watch?v=DSsx4VSe-Uk" target="_blank">Click here for sethbling's turtle series</a>
     <a href="https://tweaked.cc/module/turtle.html" target="_blank">Click here to learn more on tweaked.cc</a>
   </div>
 

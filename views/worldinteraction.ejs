@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Turtles</title>
+  <title>Turtle speakers</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-lua.min.js"></script>
@@ -11,14 +11,20 @@
 </head>
 <body>
   <div class="container">
-    <h1>Turtles</h1>
-    <p>Turtles are basically moving computers! They can interact with the world by placing blocks, breaking blocks, crafting, interacting with entities, and more! The best resource to learn about turtles is from tweaked.cc, but if you prefer a video format, Sethbling has a great series on them. This quest line will guide you through the basics, but these are great references to have!</p>
-
+    <h1>World interaction</h1>
+    <p>Just like how turtles can equip peripherals, they can equip tools as well. That doesn't mean they can't always interact with the world, though.</p>
     <br>
+    <h2>Interaction functions:</h2>
+  <h3>dig(side), digUp(side), digDown(side)</h3>
+  <p>This lets the turtle mine a block either in front of it, above it, or below it</p>
+  <p>Parameters:</p>
+  <p>- channel: The channel to send the message to</p>
+  <p>- replyChannel: The channel that responses to this message should be sent on. This can be the same as channel or entirely different. The channel must have been opened on the sending computer in order to receive the replies.</p>
+  <p>- payload: Whatever it is you want to send (boolean, number, string, table)</p>
+    
 
     <%- sidebar %>
 
-    <a href="https://www.youtube.com/watch?v=DSsx4VSe-Uk" target="_blank">Click here for sethbling's turtle series</a>
     <a href="https://tweaked.cc/module/turtle.html" target="_blank">Click here to learn more on tweaked.cc</a>
   </div>
 
