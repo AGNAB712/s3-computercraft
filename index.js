@@ -8,16 +8,7 @@ async function startBrowser() {
   let browser;
   try {
     console.log("Opening the browser...");
-    browser = await puppeteer.launch({
-      headless: true,
-      ignoreDefaultArgs: ["--disable-extensions"],
-      args: [
-        "--no-sandbox",
-        "--use-gl=egl",
-        "--disable-setuid-sandbox",
-      ],
-      ignoreHTTPSErrors: true,
-    });
+    browser = await puppeteer.launch();
   } catch (err) {
     console.log("Could not create a browser instance => : ", err);
   }
@@ -28,14 +19,14 @@ async function startPuppeteer() {
   const browser = await startBrowser()
   page = await browser.newPage();
   await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36")
-  await page.goto('https://google.com');
+  await page.goto('https://kleki.com');
   console.log('puppeteer up and running Letsa go')
 }
 startPuppeteer()
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json())
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 
@@ -133,6 +124,23 @@ app.get('/getFrame', async (req, res) => {
   res.set('Content-Type', 'image/png');
   res.send(screenshot);
 });
+app.post('/click', async (req, res) => {
+  const { x, y } = req.body
+
+  try {
+    await page.mouse.click(x, y)
+    res.send('clicked at coordinates')
+  } catch (error) {
+    res.status(500).send(`error clicking at coordinates: ${error}`)
+  }
+})
+
+
+process.on('exit', async () => {
+  if (browser) {
+    await browser.close()
+  }
+})
 
 
 const PORT = 3000;
