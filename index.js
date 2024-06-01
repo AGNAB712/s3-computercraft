@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const puppeteer = require('puppeteer');
+require("dotenv").config()
 
 let page
 
@@ -8,7 +9,15 @@ async function startBrowser() {
   let browser;
   try {
     console.log("Opening the browser...");
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({
+      args = [
+        "--disable-set-uid-sandbox",
+        "--no-sandbox",
+        "--single-process",
+        "--no-zygote"
+      ],
+      executablePath: process.env.NODE_ENV === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath()
+    });
   } catch (err) {
     console.log("Could not create a browser instance => : ", err);
   }
