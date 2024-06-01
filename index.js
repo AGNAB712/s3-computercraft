@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const puppeteer = require('puppeteer');
 require("dotenv").config()
-const converter = require('converter.js')
+const converter = require('./converter.js')
 
 let page
 
@@ -132,10 +132,10 @@ app.get('/getFrame', async (req, res) => {
   const screenshot = await page.screenshot();
 
   console.log(screenshot)
-  converter.convertToComputerCraftImage(screenshot)
+  const output = await converter.convertToComputerCraftImage(screenshot)
 
-  res.set('Content-Type', 'image/png');
-  res.send(screenshot);
+  //res.set('Content-Type', 'image/png');
+  res.send({ image: output });
 });
 app.post('/click', async (req, res) => {
   const { x, y } = req.body

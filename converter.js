@@ -32,6 +32,7 @@ async function convertToComputerCraftImage(inputImagePath) {
   let fullData = ''
 
   const image = await Jimp.read(inputImagePath)
+  console.log(image)
 
     image.resize(100, 67);
 
@@ -69,4 +70,4 @@ async function convertToComputerCraftImage(inputImagePath) {
   }
 }
 
-module.exports = convertToComputerCraftImage()
+module.exports = { convertToComputerCraftImage }
