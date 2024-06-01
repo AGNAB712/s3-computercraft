@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const puppeteer = require('puppeteer');
 require("dotenv").config()
+const converter = require('converter.js')
 
 let page
 
@@ -10,7 +11,7 @@ async function startBrowser() {
   try {
     console.log("Opening the browser...");
     browser = await puppeteer.launch({
-      args = [
+      args: [
         "--disable-set-uid-sandbox",
         "--no-sandbox",
         "--single-process",
@@ -129,6 +130,9 @@ app.get('/turtles/world-interaction', (req, res) => {
 
 app.get('/getFrame', async (req, res) => {
   const screenshot = await page.screenshot();
+
+  console.log(screenshot)
+  converter.convertToComputerCraftImage(screenshot)
 
   res.set('Content-Type', 'image/png');
   res.send(screenshot);
