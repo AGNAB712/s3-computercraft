@@ -65,6 +65,8 @@ end</code></pre><br>
     <p>- fromSlot: The slot in the source inventory to move items from.</p>
     <p>- limit: (Optional) The maximum number of items to move.</p>
     <p>- toSlot: (Optional) The slot in current inventory to move to.</p> <br>
+
+
   
     <h2>Example</h2>
     <p>This code uses </p>
@@ -98,6 +100,12 @@ end
 while true do
 filterForDiamonds()
 end</code></pre>
+
+    <h3>transferTo(slot, count)</h3>
+    <p>Transfer items between slots inside of a turtle's inventory</p>
+    <p>Parameters:</p>
+    <p>- slot: The slot to move the item to (it moves it from the current active slot to this slot).</p>
+    <p>- count: (Optional) The amount to move.</p> <br>
 
     <%- sidebar %>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crafting</title>
+  <title>Template</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-lua.min.js"></script>
@@ -11,17 +11,12 @@
 </head>
 <body>
   <div class="container">
-    <h1>Crafting</h1>
-    <p>Crafting with turtles is relatively easy. There are just a few things that you have to know.</p>
-    <p>1. Crafting with turtles requires you to have a crafting table equipped in one of the slots of the turtles</p>
-    <p>2. To craft an item, you must have all ingredients in a 3x3 in slots 1-3, 5-7, and 9-11 and no other ingredients in <strong>any other slot</strong>. The diagram below shows a valid setup</p>
-    <img src="/img/craft_diagram.png" class="image-diagram" alt="Crafting image" onclick="copyText()">
-    <p>Calling "turtle.craft()" here would put a diamond sword in slot 1</p>
-    <br>
+    <h1>Template page</h1>
+    <pre><img src="/img/copy.png" id="lua-copy-image" alt="Copy text" onclick="copyText()"><code class="language-lua" id="toCopy">print("Hello world!")</code></pre>
 
     <%- sidebar %>
 
-    <a href="https://tweaked.cc/module/turtle.html" target="_blank">Click here to learn more on tweaked.cc</a>
+    <a href="https://tweaked.cc/peripheral/speaker.html" target="_blank">Click here to learn more on tweaked.cc</a>
   </div>
 
 <script>

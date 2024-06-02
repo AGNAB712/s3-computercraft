@@ -1,43 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const puppeteer = require('puppeteer');
 require("dotenv").config()
 const converter = require('./converter.js')
-
-let page
-
-async function startBrowser() {
-  let browser;
-  try {
-    console.log("Opening the browser...");
-    browser = await puppeteer.launch({
-      args: [
-        "--disable-set-uid-sandbox",
-        "--no-sandbox",
-        "--single-process",
-        "--no-zygote"
-      ],
-      executablePath: process.env.NODE_ENV === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath()
-    });
-  } catch (err) {
-    console.log("Could not create a browser instance => : ", err);
-  }
-  return browser;
-}
-
-async function startPuppeteer() {
-  const browser = await startBrowser()
-  page = await browser.newPage();
-  await page.setViewport({
-    width: 100,
-    height: 67,
-    deviceScaleFactor: 1,
-  });
-  await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36")
-  await page.goto('https://kleki.com');
-  console.log('puppeteer up and running Letsa go')
-}
-startPuppeteer()
 
 const app = express();
 
@@ -80,12 +44,33 @@ app.use((req, res, next) => {
 </div>
 </div>
 <a href='/pocket-computers'>Pocket Computers</a> <br>
-<a href='/www'>World Wide Web</a> <br>
 <a href='/gps'>GPS</a> <br>
+<div class="list-group">
+<a href='/'>World Wide Web/Advanced Lua</a> <br>
+<a href='/wwwal/custom audio' class="indent">Custom audio</a> <br>
+</div>
+
 
 </div>
 </aside>`;
     next();
+});
+
+app.get('/first-program', (req, res) => {
+  res.render('yourfirstprogram.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/events', (req, res) => {
+  res.render('events.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/displays', (req, res) => {
+  res.render('displays.ejs', { sidebar: res.locals.sidebar });
+});
+
+app.get('/gps', (req, res) => {
+  res.redirect("https://tweaked.cc/guide/gps_setup.html");
+});
+app.get('/pocket-computers', (req, res) => {
+  res.render('pocketcomputers.ejs', { sidebar: res.locals.sidebar });
 });
 
 app.get('/peripherals', (req, res) => {
@@ -132,25 +117,6 @@ app.get('/turtles/world-interaction', (req, res) => {
   res.render('worldinteraction.ejs', { sidebar: res.locals.sidebar });
 });
 
-
-app.get('/getFrame', async (req, res) => {
-  const screenshot = await page.screenshot();
-
-  const output = await converter.convertToComputerCraftImage(screenshot)
-
-  //res.set('Content-Type', 'image/png');
-  res.send(output);
-});
-app.post('/click', async (req, res) => {
-  const { x, y } = req.body
-
-  try {
-    await page.mouse.click(x, y)
-    res.status(200).send('clicked at coordinates')
-  } catch (error) {
-    res.status(500).send(`error clicking at coordinates: ${error}`)
-  }
-})
 
 
 process.on('exit', async () => {

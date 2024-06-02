@@ -33,7 +33,7 @@ async function convertToComputerCraftImage(inputImagePath) {
 
   const image = await Jimp.read(inputImagePath)
 
-    image.resize(100, 67);
+    image.resize(164, 81);
 
     const width = image.bitmap.width;
     const height = image.bitmap.height;
