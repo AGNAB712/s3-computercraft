@@ -28,6 +28,11 @@ async function startBrowser() {
 async function startPuppeteer() {
   const browser = await startBrowser()
   page = await browser.newPage();
+  await page.setViewport({
+    width: 100,
+    height: 67,
+    deviceScaleFactor: 1,
+  });
   await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36")
   await page.goto('https://kleki.com');
   console.log('puppeteer up and running Letsa go')
@@ -131,18 +136,17 @@ app.get('/turtles/world-interaction', (req, res) => {
 app.get('/getFrame', async (req, res) => {
   const screenshot = await page.screenshot();
 
-  console.log(screenshot)
   const output = await converter.convertToComputerCraftImage(screenshot)
 
   //res.set('Content-Type', 'image/png');
-  res.send({ image: output });
+  res.send(output);
 });
 app.post('/click', async (req, res) => {
   const { x, y } = req.body
 
   try {
     await page.mouse.click(x, y)
-    res.send('clicked at coordinates')
+    res.status(200).send('clicked at coordinates')
   } catch (error) {
     res.status(500).send(`error clicking at coordinates: ${error}`)
   }
