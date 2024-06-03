@@ -148,6 +148,11 @@ app.get('/api/getJson', (req, res) => {
     message_2: "This is the second message that you can get"
   });
 });
+app.get('/api/getEcho', (req, res) => {
+  const text = req.query.text
+  if (!text) res.send(400).send('Missing text query')
+  res.send('Hello you inputted: '+text.toString());
+});
 let postedTimes = false;
 app.post('/api/post', (req, res) => {
   const data = req.body

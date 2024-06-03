@@ -54,14 +54,9 @@ print(response.readAll()) --expected response: "Data received successfully"
           });
   }
 
-const pastDate = <%= index %> || "Never";
+const pastDate = new Date(<%= index %>);
 
 function updateTimeDifference() {
-  if (pastDate === "Never") {
-    document.getElementById('time-difference').innerText = 
-    `Last posted: Never`;
-    return
-  }
   const now = new Date();
   const difference = now - pastDate;
 
