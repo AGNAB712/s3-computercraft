@@ -150,6 +150,8 @@ app.get('/api/getJson', (req, res) => {
 });
 let postedTimes = 0
 app.post('/api/post', (req, res) => {
+  const data = req.body
+  console.log(data)
   if (!data?.text) {
     res.status(400).send("you're missing a text component in the json youre sending over buddy")
   } else {
