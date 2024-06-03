@@ -95,6 +95,12 @@ a {
   border-radius: 10px;
   border: 10px solid #222;
 }
+.terminal {
+  background-color: #1e1d1d;
+  border: 5px solid #1b1a1a;
+  padding: 5px;
+  border-radius: 5px;
+}
 
 aside {
   text-align: center;

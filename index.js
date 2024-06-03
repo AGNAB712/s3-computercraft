@@ -47,7 +47,13 @@ app.use((req, res, next) => {
 <a href='/gps'>GPS</a> <br>
 <div class="list-group">
 <a href='/'>World Wide Web/Advanced Lua</a> <br>
-<a href='/wwwal/custom audio' class="indent">Custom audio</a> <br>
+<a href='/wwwal/custom-audio' class="indent">Custom audio</a> <br>
+<a href='/wwwal/custom-audio' class="indent">Libraries</a> <br>
+<div class="list-group-2">
+<a href='/wwwal/get' class="indent-2">HTTP: Get</a> <br>
+<a href='/wwwal/post' class="indent-2">HTTP: Post</a> <br>
+<a href='/wwwal/websockets' class="indent-2">HTTP: Websockets</a> <br>
+</div>
 </div>
 
 
@@ -116,6 +122,35 @@ app.get('/turtles/speaker', (req, res) => {
 app.get('/turtles/world-interaction', (req, res) => {
   res.render('worldinteraction.ejs', { sidebar: res.locals.sidebar });
 });
+
+app.get('/wwwal/custom-audio', (req, res) => {
+  res.render('audio.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/wwwal/libraries', (req, res) => {
+  res.render('libraries.ejs', { sidebar: res.locals.sidebar });
+});
+app.get('/wwwal/get', (req, res) => {
+  res.render('get.ejs', { sidebar: res.locals.sidebar });
+});
+
+
+app.get('/api/get', (req, res) => {
+  res.send('Hello you got the very cool message');
+});
+app.get('/api/getJson', (req, res) => {
+  res.json({
+    message: "Hello you got the very cool message",
+    message_2: "This is the second message that you can get"
+  });
+});
+
+let awesomeVariable = 0;
+app.post('/api/increaseVariable', (req, res) => {
+  console.log(req.body)
+  awesomeVariable++
+  res.send('Congratalations the variable is now '+awesomeVariable.toString)
+})
+
 
 
 
