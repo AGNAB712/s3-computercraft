@@ -24,7 +24,7 @@
 print(response.readAll()) --expected response: "Data received successfully"
 --this post request doesn't do anything with the body payload given by the way, it's just there to teach you
 </code></pre>
-<p>Amount of times post used: <%- index %></p>
+<p id="time-difference"></p>
 
     <%- sidebar %>
 
@@ -53,6 +53,30 @@ print(response.readAll()) --expected response: "Data received successfully"
               console.error('Unable to copy text to clipboard:', error);
           });
   }
+
+const pastDate = <%= index %> || "Never";
+
+function updateTimeDifference() {
+  if (pastDate === "Never") {
+    document.getElementById('time-difference').innerText = 
+    `Last posted: Never`;
+    return
+  }
+  const now = new Date();
+  const difference = now - pastDate;
+
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+  document.getElementById('time-difference').innerText = 
+  `Last posted: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+}
+
+setInterval(updateTimeDifference, 1000);
+
+updateTimeDifference();
 </script>
 </body>
 </html>

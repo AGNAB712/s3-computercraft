@@ -148,14 +148,14 @@ app.get('/api/getJson', (req, res) => {
     message_2: "This is the second message that you can get"
   });
 });
-let postedTimes = 0
+let postedTimes = false;
 app.post('/api/post', (req, res) => {
   const data = req.body
   console.log(data)
   if (!data?.text) {
     res.status(400).send("you're missing a text component in the json youre sending over buddy")
   } else {
-    postedTimes++
+    postedTimes = new Date()
     res.send('Data received successfully')
   }
   
