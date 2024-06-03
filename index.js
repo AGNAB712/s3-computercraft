@@ -132,7 +132,12 @@ app.get('/wwwal/libraries', (req, res) => {
 app.get('/wwwal/get', (req, res) => {
   res.render('get.ejs', { sidebar: res.locals.sidebar });
 });
-
+app.get('/wwwal/post', (req, res) => {
+  res.render('post.ejs', { sidebar: res.locals.sidebar, index: postedTimes });
+});
+app.get('/wwwal/websockets', (req, res) => {
+  res.render('websockets.ejs', { sidebar: res.locals.sidebar });
+});
 
 app.get('/api/get', (req, res) => {
   res.send('Hello you got the very cool message');
@@ -143,13 +148,48 @@ app.get('/api/getJson', (req, res) => {
     message_2: "This is the second message that you can get"
   });
 });
-
-let awesomeVariable = 0;
-app.post('/api/increaseVariable', (req, res) => {
-  console.log(req.body)
-  awesomeVariable++
-  res.send('Congratalations the variable is now '+awesomeVariable.toString)
+let postedTimes = 0
+app.post('/api/post', (req, res) => {
+  if (!data?.text) {
+    res.status(400).send("you're missing a text component in the json youre sending over buddy")
+  } else {
+    postedTimes++
+    res.send('Data received successfully')
+  }
+  
 })
+
+
+
+/*let awesomeArray = ["This is the first one in the index"];
+app.post('/api/post', (req, res) => {
+  const data = req.body
+  console.log(data)
+  if (!data?.text) {
+    res.status(400).send("you're missing a text component in the json youre sending over buddy")
+  } else {
+    awesomeArray.push(data.text)
+    res.json({
+      message: "Data pushed successfully",
+      index: awesomeArray.length
+    })
+  }
+  
+})
+app.get('/api/getFromIndex', (req, res) => {
+
+  const index = req.query?.index
+  if (index) {
+    if (!(typeof index === "string")) return res.status(400).send('Must be a number')
+    const toSend = awesomeArray[index - 1]
+    if (!toSend) return res.status(404).send('Not found')
+    res.send(toSend)
+  } else {
+    res.status(400).send('No index specified')
+  }
+  
+  
+})*/
 
 
 
