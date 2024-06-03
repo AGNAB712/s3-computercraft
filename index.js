@@ -2,16 +2,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 require("dotenv").config()
 const converter = require('./converter.js')
+const favicon = require('express-favicon');
+const gTTS = require('gtts');
+const ffmpeg = require('fluent-ffmpeg');
+const lanugages = require('./languages.json')
+const dfpwm = require('dfpwm')
+const fs = require('fs');
+
 
 const app = express();
 
 app.use(express.json())
+app.use(favicon(__dirname + '/public/img/favicon.png'));
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
-
-app.get('/', (req, res) => {
-  res.render('home.ejs');
-});
 
 app.use((req, res, next) => {
     res.locals.sidebar = `<aside>
@@ -50,9 +54,9 @@ app.use((req, res, next) => {
 <a href='/wwwal/custom-audio' class="indent">Custom audio</a> <br>
 <a href='/wwwal/custom-audio' class="indent">Libraries</a> <br>
 <div class="list-group-2">
-<a href='/wwwal/get' class="indent-2">HTTP: Get</a> <br>
-<a href='/wwwal/post' class="indent-2">HTTP: Post</a> <br>
-<a href='/wwwal/websockets' class="indent-2">HTTP: Websockets</a> <br>
+<a href='/wwwal/get' class="indent">HTTP: Get</a> <br>
+<a href='/wwwal/post' class="indent">HTTP: Post</a> <br>
+<a href='/wwwal/websockets' class="indent">HTTP: Websockets</a> <br>
 </div>
 </div>
 
@@ -60,6 +64,10 @@ app.use((req, res, next) => {
 </div>
 </aside>`;
     next();
+});
+
+app.get('/', (req, res) => {
+  res.render('home.ejs', { sidebar: res.locals.sidebar });
 });
 
 app.get('/first-program', (req, res) => {
@@ -153,7 +161,7 @@ app.get('/api/getEcho', (req, res) => {
   if (!text) res.send(400).send('Missing text query')
   res.send('Hello you inputted: '+text.toString());
 });
-let postedTimes = false;
+let postedTimes = new Date();
 app.post('/api/post', (req, res) => {
   const data = req.body
   console.log(data)
@@ -167,36 +175,40 @@ app.post('/api/post', (req, res) => {
 })
 
 
-
-/*let awesomeArray = ["This is the first one in the index"];
-app.post('/api/post', (req, res) => {
-  const data = req.body
-  console.log(data)
-  if (!data?.text) {
-    res.status(400).send("you're missing a text component in the json youre sending over buddy")
-  } else {
-    awesomeArray.push(data.text)
-    res.json({
-      message: "Data pushed successfully",
-      index: awesomeArray.length
-    })
-  }
-  
+app.get('/api/tts', async (req, res) => {
+    console.log(req.query?.text, req.query?.voice)
+    let output
+    if (req.query.text) {
+      let voice = req.query?.voice || 'en'
+      req.query?.voice in lanugages ? voice : voice = 'en'
+    const gtts = await new gTTS(req.query.text, voice);
+    const buffer = gtts.save('temp.mp3', async function (err, result) {
+      if(err) { throw new Error(err) }
+      console.log('Finished TTS');
+      convertMp3ToDFPWM('temp.mp3', res)
+    });
+    }
 })
-app.get('/api/getFromIndex', (req, res) => {
 
-  const index = req.query?.index
-  if (index) {
-    if (!(typeof index === "string")) return res.status(400).send('Must be a number')
-    const toSend = awesomeArray[index - 1]
-    if (!toSend) return res.status(404).send('Not found')
-    res.send(toSend)
-  } else {
-    res.status(400).send('No index specified')
-  }
-  
-  
-})*/
+const encoder = new dfpwm.Encoder()
+async function convertMp3ToDFPWM(inputFile, res) {
+ffmpeg(inputFile)
+  .outputOptions('-f s8')
+  .outputOptions('-ar 44100')
+  .outputOptions('-ac 1')
+  .outputOptions('-acodec pcm_s8')
+  .output('temp.pcm')
+  .on('end', () => {
+    const pcmData = fs.readFileSync('temp.pcm');
+    const dfpwmData = encoder.encode(pcmData)
+    res.send(dfpwmData)
+  })
+  .on('error', (err) => {
+    console.error('Error during conversion:', err);
+  })
+  .run();
+}
+
 
 
 

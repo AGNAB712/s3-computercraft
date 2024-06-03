@@ -29,18 +29,18 @@ print(jsonToTable["message_2"]) --expected response: "This is the second message
 
     <h3>Queries</h3>
     <p>In a get request, you can send information through a "query" in the URL of the get request. This helps send information to the server about what kind of information you are requesting.</p>
-    <pre><img src="/img/copy.png" id="lua-copy-image" alt="Copy text" onclick="copyText()"><code class="language-lua" id="toCopy">local response = http.get("https://agnab.onrender.com/api/getEcho")
+    <pre><img src="/img/copy.png" id="lua-copy-image" alt="Copy text" onclick="copyText()"><code class="language-lua" id="toCopy">local textToSend = "This is some cool text"
+local response = http.get("https://agnab.onrender.com/api/getEcho?text=".. textutils.urlEncode(textToSend)) 
+--textutils has a nifty tool that lets you encode text so it can be passed through a url
 
-local jsonToTable = textutils.unserialiseJSON(response.readAll()) --turns the json into a table
-print(jsonToTable["message"]) --expected response: "Hello you got the very cool message"
-print(jsonToTable["message_2"]) --expected response: "This is the second message that you can get"
+print(response.readAll()) --expected response: "Hello you inputted: This is some cool text"
 </code></pre>
 
 
     <%- sidebar %>
 
 
-    <a href="https://tweaked.cc/peripheral/speaker.html" target="_blank">Click here to learn more on tweaked.cc</a>
+    <a href="https://tweaked.cc/module/http.html" target="_blank">Click here to learn more on tweaked.cc</a>
   </div>
 
 <script>
