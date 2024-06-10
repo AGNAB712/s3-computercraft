@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Server</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+
+
+  <link rel="stylesheet" href="/vr.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Victory Road - Server</h1>
+    <article>
+      <p>Now that everything is set up, we can finally start on the server!</p>
+      <p>Inside your index.js file, put in</p>
+      <pre><img src="/img/copy.png" id="lua-copy-image" alt="Copy text" onclick="copyText()"><code class="language-javascript" id="toCopy">// import express
+const express = require('express');
+const app = express();
+
+//this is the port your server will be hosted on
+const port = 3000;
+
+//use this to parse json stuff
+app.use(express.json());
+
+//this is for the home page
+app.get('/', (req, res) => {
+  res.send('hello world');
+});
+
+//start and allat
+app.listen(port, () => {
+  console.log(`server running at http://localhost:3000`);
+});</code></pre>
+    <p>Now run</p>
+    <p class="terminal">node index.js</p>
+    <p>You should see the message "server running at http://locahost:3000"</p>
+    <p>Then navigate to <a href="http://localhost:3000" target="_blank" style="
+        color: skyblue;
+        text-decoration: underline;
+        background-color: transparent;
+        padding: 2px;
+        margin: 0;
+      ">localhost:3000</a>, and you should see the "hello world" text rendered</p>
+    <br>
+    <p>Awesome! Now you would be able to call a get request from a CC computer to the url "localhost:3000" right?</p>
+    <p><strong class="no">WRONG.</strong> As you can see from the url name, this is only hosted locally! We can get around this by using ngrok, a tunneling service. The one downside to using ngrok is that the url name resets every time you reset the server.</p>
+    <p>Here is updated code using the ngrok library we installed earlier</p>
+
+    <pre><img src="/img/copy.png" id="lua-copy-image" alt="Copy text" onclick="copyText()"><code class="language-javascript" id="toCopy">//...
+//start and allat
+app.listen(port, () => {
+  console.log(`server running at http://localhost:3000`);
+
+  const ngrok = require('ngrok');
+  (async function() {
+    const url = await ngrok.connect(port);
+    console.log(`ngrok tunnel: ${url}`);
+  })();
+});</code></pre>
+<p>Now anyone will be able to go to the url ngrok gives you and view the website! Computers will also be able to view it</p>
+<p>This is the bare minimum you need to complete this quest. If you want to learn more about using express to do awesome stuff on the web, check out <a href="https://www.youtube.com/watch?v=SccSCuHhOw0" target="_blank" style="
+        color: skyblue;
+        text-decoration: underline;
+        background-color: transparent;
+        padding: 2px;
+        margin: 0;
+      ">this video</a></p>
+<br>
+<a href="/victory-road/finish">Continue</a>
+      
+    </article>
+  </div>
+
+<script>
+  function copyText() {
+      const parentElement = document.getElementById('toCopy');
+      let textToCopy = '';
+
+      for (let i = 0; i < parentElement.childNodes.length; i++) {
+          const child = parentElement.childNodes[i];
+
+          textToCopy += child.textContent;
+      }
+
+      navigator.clipboard.writeText(textToCopy)
+          .then(function() {
+              const button = document.getElementById('lua-copy-image')
+              button.src = 'img/check.png'
+              button.style.height = '25px'
+          })
+          .catch(function(error) {
+              console.error('Unable to copy text to clipboard:', error);
+          });
+  }
+</script>
+</body>
+</html>

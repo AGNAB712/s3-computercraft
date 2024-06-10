@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finish</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+
+
+  <link rel="stylesheet" href="/vr.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Thanks for playing through</h1>
+    <article>
+<p>I really appreciate the amount of time you put in to completing this questline, this whole website took me a while to develop and I hope you had as much fun as I had creating it.</p>
+<img src="/img/certificate.png" class="image-diagram" style="width: 100%; height: auto">
+      
+    </article>
+  </div>
+
+<script>
+  function copyText() {
+      const parentElement = document.getElementById('toCopy');
+      let textToCopy = '';
+
+      for (let i = 0; i < parentElement.childNodes.length; i++) {
+          const child = parentElement.childNodes[i];
+
+          textToCopy += child.textContent;
+      }
+
+      navigator.clipboard.writeText(textToCopy)
+          .then(function() {
+              const button = document.getElementById('lua-copy-image')
+              button.src = 'img/check.png'
+              button.style.height = '25px'
+          })
+          .catch(function(error) {
+              console.error('Unable to copy text to clipboard:', error);
+          });
+  }
+</script>
+</body>
+</html>

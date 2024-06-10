@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 <div class="list-group">
 <a href='/'>World Wide Web/Advanced Lua</a> <br>
 <a href='/wwwal/custom-audio' class="indent">Custom audio</a> <br>
-<a href='/wwwal/custom-audio' class="indent">Libraries</a> <br>
+<a href='/wwwal/libraries' class="indent">Libraries</a> <br>
 <div class="list-group-2">
 <a href='/wwwal/get' class="indent">HTTP: Get</a> <br>
 <a href='/wwwal/post' class="indent">HTTP: Post</a> <br>
@@ -146,6 +146,24 @@ app.get('/wwwal/post', (req, res) => {
 app.get('/wwwal/websockets', (req, res) => {
   res.render('websockets.ejs', { sidebar: res.locals.sidebar });
 });
+
+app.get('/victory-road', (req, res) => {
+  res.render('vr/victoryroad.ejs')
+})
+app.get('/victory-road/requirements', (req, res) => {
+  res.render('vr/requirements.ejs')
+})
+app.get('/victory-road/node-environment', (req, res) => {
+  res.render('vr/environment.ejs')
+})
+app.get('/victory-road/server', (req, res) => {
+  res.render('vr/server.ejs')
+})
+app.get('/victory-road/finish', (req, res) => {
+  res.render('vr/finish.ejs')
+})
+
+
 
 app.get('/api/get', (req, res) => {
   res.send('Hello you got the very cool message');

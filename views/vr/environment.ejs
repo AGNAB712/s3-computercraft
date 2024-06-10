@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node environment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+
+
+  <link rel="stylesheet" href="/vr.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Victory Road - Node environment</h1>
+    <article>
+      <p>Firstly, create a new folder on your computer (preferable somewhere in your C: drive). Then open command prompt, and type in</p>
+      <p class="terminal">cd (PATH TO FILE)</p>
+      <p>Then type in</p>
+      <p class="terminal">npm init</p>
+      <p>Follow the directions it gives you, it doesn't really matter anyways because we're never likely going to be deploying this publically permanently.</p>
+      <br>
+      <p>Awesome! Now we have a new environment for us to play around with node js in. Create a file in the directory called "index.js", and inside of it, put</p>
+      <pre><img src="/img/copy.png" id="lua-copy-image" alt="Copy text" onclick="copyText()"><code class="language-javascript" id="toCopy">console.log("Hello node world!")</code></pre>
+      <p>Then in the console type</p>
+      <p class="terminal">node index.js</p>
+      <p>The console should then output "Hello node world!"! Pretty awesome</p>
+      <br>
+      <h2>Installing dependencies</h2>
+      <p>Now that we have a node environment, we should install the packages we will be using to create our server. In the console type</p>
+      <p class="terminal">npm install express ngrok</p>
+      <p>This should install the 2 packages we will be using; express (to create the server) and ngrok (to tunnel the server)</p>
+      <br>
+      <a href="/victory-road/server">Continue</a>
+
+      
+    </article>
+  </div>
+
+<script>
+  function copyText() {
+      const parentElement = document.getElementById('toCopy');
+      let textToCopy = '';
+
+      for (let i = 0; i < parentElement.childNodes.length; i++) {
+          const child = parentElement.childNodes[i];
+
+          textToCopy += child.textContent;
+      }
+
+      navigator.clipboard.writeText(textToCopy)
+          .then(function() {
+              const button = document.getElementById('lua-copy-image')
+              button.src = 'img/check.png'
+              button.style.height = '25px'
+          })
+          .catch(function(error) {
+              console.error('Unable to copy text to clipboard:', error);
+          });
+  }
+</script>
+</body>
+</html>
