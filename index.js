@@ -244,8 +244,8 @@ app.get('/api/youtube', async (req, res) => {
       res.status(400).send('Invalid url')
       return
     }
-    const info = await ytdl.getInfo(url)
-    const videoId = info.videoDetails.videoId
+    const info = await ytdl.getInfo(url)*/
+    const videoId = info.videoDetails.videoId/*
     const TEN_MINUTES = 10*60*60
     if (info.videoDetails.lengthSeconds > TEN_MINUTES) {
       res.status(400).send('Cannot download a video longer than 10 minutes')
