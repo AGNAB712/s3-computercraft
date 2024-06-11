@@ -8,7 +8,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const lanugages = require('./languages.json')
 const dfpwm = require('dfpwm')
 const fs = require('fs');
-const ytdl = require('ytdl-core');
+const ytdl = require("ytdl-core");
 const Stream = require('stream');
 const path = require('path')
 const fetch = require('node-fetch');
@@ -239,7 +239,7 @@ app.get('/api/youtube', async (req, res) => {
       res.status(400).send('Missing url')
       return
     }
-    const valid = ytdl.validateURL(url)
+    /*const valid = ytdl.validateURL(url)
     if (!valid) {
       res.status(400).send('Invalid url')
       return
@@ -250,7 +250,7 @@ app.get('/api/youtube', async (req, res) => {
     if (info.videoDetails.lengthSeconds > TEN_MINUTES) {
       res.status(400).send('Cannot download a video longer than 10 minutes')
       return
-    }
+    }*/
 
     const dfpwmPath = path.join(__dirname, `/yt/${videoId}.dfpwm`)
 
@@ -272,7 +272,17 @@ app.get('/api/youtube', async (req, res) => {
       }
 
 
-      const video = ytdl(url, { filter: 'audioonly' })
+      const video = ytdl(url, { filter: 'audioonly',
+      requestOptions: {
+        headers: {
+          cookie: process.env.COOKIE,
+          // Optional. If not given, ytdl-core will try to find it.
+          // You can find this by going to a video's watch page, viewing the source,
+          // and searching for "ID_TOKEN".
+          // 'x-youtube-identity-token': 1324,
+        },
+      }
+      })
       ffmpeg(video)
         .outputOptions('-f s8')
         .outputOptions('-ar 44100')
