@@ -243,14 +243,20 @@ app.get('/api/youtube', async (req, res) => {
     if (!valid) {
       res.status(400).send('Invalid url')
       return
-    }
-    const info = await ytdl.getInfo(url)*/
-    const videoId = info.videoDetails.videoId/*
+    }*/
+    const info = await ytdl.getInfo(url, { 
+      requestOptions: {
+        headers: {
+          cookie: process.env.COOKIE,
+        } 
+      } 
+    })
+    const videoId = info.videoDetails.videoId
     const TEN_MINUTES = 10*60*60
     if (info.videoDetails.lengthSeconds > TEN_MINUTES) {
       res.status(400).send('Cannot download a video longer than 10 minutes')
       return
-    }*/
+    }
 
     const dfpwmPath = path.join(__dirname, `/yt/${videoId}.dfpwm`)
 
@@ -276,10 +282,6 @@ app.get('/api/youtube', async (req, res) => {
       requestOptions: {
         headers: {
           cookie: process.env.COOKIE,
-          // Optional. If not given, ytdl-core will try to find it.
-          // You can find this by going to a video's watch page, viewing the source,
-          // and searching for "ID_TOKEN".
-          // 'x-youtube-identity-token': 1324,
         },
       }
       })
