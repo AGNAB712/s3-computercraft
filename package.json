@@ -20,6 +20,6 @@
     "jimp": "^0.22.12",
     "stream": "^0.0.2",
     "ws": "^8.17.0",
-    "ytdl-core": "github:eugabrielsilva/node-ytdl-core"
+    "ytdl-core": "^4.11.5"
   }
 }
