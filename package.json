@@ -19,9 +19,10 @@
     "fluent-ffmpeg": "^2.1.3",
     "gtts": "^0.2.1",
     "jimp": "^0.22.12",
+    "play-dl": "^1.9.7",
+    "social-downloader-cherry": "^1.0.0",
     "stream": "^0.0.2",
     "ws": "^8.17.0",
-    "ytdl-core": "^4.11.5",
-    "ytdl-easy": "^1.1.5"
+    "ytdl-core": "^4.9.2"
   }
 }

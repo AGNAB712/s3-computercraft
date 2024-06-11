@@ -8,8 +8,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const lanugages = require('./languages.json')
 const dfpwm = require('dfpwm')
 const fs = require('fs');
-const ytdl = require("@distube/ytdl-core");
-const agent = ytdl.createProxyAgent({ uri: process.env.PROXY });
+const ytdl = require("ytdl-core");
 const Stream = require('stream');
 const path = require('path')
 const fetch = require('node-fetch');
@@ -240,12 +239,12 @@ app.get('/api/youtube', async (req, res) => {
       res.status(400).send('Missing url')
       return
     }
-    /*const valid = ytdl.validateURL(url)
+    const valid = ytdl.validateURL(url)
     if (!valid) {
       res.status(400).send('Invalid url')
       return
-    }*/
-    const info = await ytdl.getInfo(url, { agent })
+    }
+    const info = await ytdl.getInfo(url)
     const videoId = info.videoDetails.videoId
     const TEN_MINUTES = 10*60*60
     if (info.videoDetails.lengthSeconds > TEN_MINUTES) {
@@ -273,7 +272,7 @@ app.get('/api/youtube', async (req, res) => {
       }
 
 
-      const video = ytdl(url, { filter: 'audioonly', agent })
+      const video = ytdl(url, { filter: 'audioonly' })
       ffmpeg(video)
         .outputOptions('-f s8')
         .outputOptions('-ar 44100')
@@ -304,6 +303,23 @@ app.get('/api/youtube', async (req, res) => {
     
 })
 
+app.get('/api/test', async (req, res) => {
+
+    const url = req.query?.url
+    if (!url) {
+      res.status(400).send('Missing url')
+      return
+    }
+    
+  /*youtubedl('https://youtu.be/qCAx4ynlIUM?list=RDMM', {
+    dumpSingleJson: true,
+    noCheckCertificates: true,
+    noWarnings: true,
+    preferFreeFormats: true,
+    addHeader: ['referer:youtube.com', 'user-agent:googlebot']
+  }).then(output => console.log(output))*/
+})
+
 
 
 function sendWebhook(content) {
@@ -319,9 +335,6 @@ function sendWebhook(content) {
       return res
   }) 
 }
-
-
-
 
 
 process.on('exit', async () => {
