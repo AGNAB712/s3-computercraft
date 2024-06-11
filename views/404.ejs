@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 not found</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-lua.min.js"></script>
+  <link rel="stylesheet" href="/404.css">
+</head>
+<body>
+
+<div class="container" id="404">
+  <h1>404</h1>
+  <p>sorry i cant find that page</p>
+</div>
+
+
+<script>
+  if (window.location.pathname == "/api/post") {
+    const container = document.getElementById("404")
+    const element = document.createElement('p')
+    element.textContent = `(psst, you can't view a post request url on a browser)`
+    container.appendChild(element)
+  }
+</script>
+</body>
+</html>

@@ -8,6 +8,10 @@ const ffmpeg = require('fluent-ffmpeg');
 const lanugages = require('./languages.json')
 const dfpwm = require('dfpwm')
 const fs = require('fs');
+const ytdl = require('ytdl-core');
+const Stream = require('stream');
+const path = require('path')
+const fetch = require('node-fetch');
 
 
 const app = express();
@@ -176,7 +180,7 @@ app.get('/api/getJson', (req, res) => {
 });
 app.get('/api/getEcho', (req, res) => {
   const text = req.query.text
-  if (!text) res.send(400).send('Missing text query')
+  if (!text) res.send(400).send('Missing text to echo')
   res.send('Hello you inputted: '+text.toString());
 });
 let postedTimes = new Date();
@@ -194,7 +198,6 @@ app.post('/api/post', (req, res) => {
 
 
 app.get('/api/tts', async (req, res) => {
-    console.log(req.query?.text, req.query?.voice)
     let output
     if (req.query.text) {
       let voice = req.query?.voice || 'en'
@@ -205,6 +208,7 @@ app.get('/api/tts', async (req, res) => {
       console.log('Finished TTS');
       convertMp3ToDFPWM('temp.mp3', res)
     });
+    sendWebhook(`TTS API INTERACTION\nText: ${req.query?.text}\nVoice: ${req.query?.voice}`)
     }
 })
 
@@ -228,6 +232,92 @@ ffmpeg(inputFile)
 }
 
 
+app.get('/api/youtube', async (req, res) => {
+
+    const url = req.query?.url
+    if (!url) {
+      res.status(400).send('Missing url')
+      return
+    }
+    const valid = ytdl.validateURL(url)
+    if (!valid) {
+      res.status(400).send('Invalid url')
+      return
+    }
+    const info = await ytdl.getInfo(url)
+    const videoId = info.videoDetails.videoId
+    const TEN_MINUTES = 10*60*60
+    if (info.videoDetails.lengthSeconds > TEN_MINUTES) {
+      res.status(400).send('Cannot download a video longer than 10 minutes')
+      return
+    }
+
+    const dfpwmPath = path.join(__dirname, `/yt/${videoId}.dfpwm`)
+
+    if (!fs.existsSync(dfpwmPath)) {
+      sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
+      let pcmData = Buffer.alloc(0);
+
+      //probably should make this a class but im not THAT smart
+      const ffmpegStream = new Stream;
+      ffmpegStream.writable = true;
+      ffmpegStream.bytes = 0;
+
+      ffmpegStream.write = function(chunk, encoding, callback) {
+        pcmData = Buffer.concat([pcmData, chunk]);
+      }
+      ffmpegStream.end = function(buf) {
+         if(arguments.length) ffmpegStream.write(buf);
+         ffmpegStream.writable = false;
+      }
+
+
+      const video = ytdl(url, { filter: 'audioonly' })
+      ffmpeg(video)
+        .outputOptions('-f s8')
+        .outputOptions('-ar 44100')
+        .outputOptions('-ac 1')
+        .outputOptions('-acodec pcm_s8')
+        .output(ffmpegStream)
+        .on('end', () => {
+          const dfpwmData = encoder.encode(pcmData)
+          const dfpwmStream = fs.createWriteStream(dfpwmPath)
+          dfpwmStream.write(dfpwmData)
+
+          res.set("Content-Disposition", `attachment; filename="${videoId}.dfpwm"`);
+          res.send(dfpwmPath)
+        })
+        .on('error', (err) => {
+          console.error('Error during conversion:', err);
+        })
+        .run();
+
+
+
+    } else {
+      sendWebhook(`YOUTUBE API INTERACTION\nSending dfpwm: ${url}`)
+      res.set("Content-Disposition", `attachment; filename="${videoId}.dfpwm"`);
+      res.send(dfpwmPath)
+    }
+
+    
+})
+
+
+
+function sendWebhook(content) {
+  fetch('https://discord.com/api/webhooks/1249905857395953725/BaI-wUnOiJw7ZMPR3BmyoCV2znE24Sh26aVRQmZfVUlGz5eyELTZSjktk9YJVvs6aH0A', {
+    method: "POST",
+    headers: {
+        'Content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      content: content
+    })
+  }).then(res => {
+      return res
+  }) 
+}
 
 
 
@@ -240,7 +330,12 @@ process.on('exit', async () => {
 })
 
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.get('*', (req, res) => { 
+  res.status(404).render('404.ejs'); 
+}); 
+
+
+const port = 3000 || process.env.PORT;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
