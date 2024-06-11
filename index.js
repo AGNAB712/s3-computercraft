@@ -8,7 +8,8 @@ const ffmpeg = require('fluent-ffmpeg');
 const lanugages = require('./languages.json')
 const dfpwm = require('dfpwm')
 const fs = require('fs');
-const ytdl = require("ytdl-core");
+const ytdl = require("@distube/ytdl-core");
+const agent = ytdl.createProxyAgent({ uri: process.env.PROXY });
 const Stream = require('stream');
 const path = require('path')
 const fetch = require('node-fetch');
@@ -244,13 +245,7 @@ app.get('/api/youtube', async (req, res) => {
       res.status(400).send('Invalid url')
       return
     }*/
-    const info = await ytdl.getInfo(url, { 
-      requestOptions: {
-        headers: {
-          cookie: process.env.COOKIE,
-        } 
-      } 
-    })
+    const info = await ytdl.getInfo(url, { agent })
     const videoId = info.videoDetails.videoId
     const TEN_MINUTES = 10*60*60
     if (info.videoDetails.lengthSeconds > TEN_MINUTES) {
@@ -278,13 +273,7 @@ app.get('/api/youtube', async (req, res) => {
       }
 
 
-      const video = ytdl(url, { filter: 'audioonly',
-      requestOptions: {
-        headers: {
-          cookie: process.env.COOKIE,
-        },
-      }
-      })
+      const video = ytdl(url, { filter: 'audioonly', agent })
       ffmpeg(video)
         .outputOptions('-f s8')
         .outputOptions('-ar 44100')

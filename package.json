@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@distube/ytdl-core": "^4.13.4",
     "body-parser": "^1.20.2",
     "dfpwm": "^1.2.2",
     "dotenv": "^16.4.5",
