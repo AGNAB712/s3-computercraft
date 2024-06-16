@@ -12,6 +12,8 @@ const ytdl = require("ytdl-core");
 const Stream = require('stream');
 const path = require('path')
 const fetch = require('node-fetch');
+const YTDlpWrap = require('yt-dlp-wrap').default;
+const ytDlpWrap = new YTDlpWrap('ytdl/yt-dlp');
 
 
 const app = express();
@@ -305,19 +307,63 @@ app.get('/api/youtube', async (req, res) => {
 
 app.get('/api/test', async (req, res) => {
 
-    const url = req.query?.url
-    if (!url) {
-      res.status(400).send('Missing url')
-      return
-    }
-    
-  /*youtubedl('https://youtu.be/qCAx4ynlIUM?list=RDMM', {
-    dumpSingleJson: true,
-    noCheckCertificates: true,
-    noWarnings: true,
-    preferFreeFormats: true,
-    addHeader: ['referer:youtube.com', 'user-agent:googlebot']
-  }).then(output => console.log(output))*/
+  console.log('i noticed')
+
+  const id = req.query?.id
+
+  let readableStream = ytDlpWrap.execStream([
+      `https://www.youtube.com/watch?v=${id}`,
+      '-f',
+      'bestaudio',
+      '--audio-format', 'mp3'
+  ])
+  .on('progress', (progress) =>
+          console.log(
+              progress.percent,
+              progress.totalSize,
+              progress.currentSpeed,
+              progress.eta
+          )
+      )
+  .on('close', () => console.log('all done'));
+
+  const dfpwmPath = path.join(__dirname, `/yt/${id}.dfpwm`)
+
+
+  let pcmData = Buffer.alloc(0);
+
+  //probably should make this a class but im not THAT smart
+  const ffmpegStream = new Stream;
+  ffmpegStream.writable = true;
+  ffmpegStream.bytes = 0;
+
+  ffmpegStream.write = function(chunk, encoding, callback) {
+    pcmData = Buffer.concat([pcmData, chunk]);
+  }
+  ffmpegStream.end = function(buf) {
+    if(arguments.length) ffmpegStream.write(buf);
+    ffmpegStream.writable = false;
+  }
+
+
+  ffmpeg(readableStream)
+    .outputOptions('-f s8')
+    .outputOptions('-ar 44100')
+    .outputOptions('-ac 1')
+    .outputOptions('-acodec pcm_s8')
+    .output(ffmpegStream)
+    .on('end', () => {
+      const dfpwmData = encoder.encode(pcmData)
+      const dfpwmStream = fs.createWriteStream(dfpwmPath)
+      dfpwmStream.write(dfpwmData)
+
+      res.set("Content-Disposition", `attachment; filename="amazing.dfpwm"`);
+      res.send(dfpwmPath)
+    })
+    .on('error', (err) => {
+      console.error('Error during conversion:', err);
+    })
+    .run();
 })
 
 
