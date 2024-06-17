@@ -13,7 +13,7 @@ const Stream = require('stream');
 const path = require('path')
 const fetch = require('node-fetch');
 const YTDlpWrap = require('yt-dlp-wrap').default;
-const ytDlpWrap = new YTDlpWrap('ytdl/yt-dlp_linux');
+const ytDlpWrap = new YTDlpWrap('ytdl/yt-dlp-linux');
 
 
 const app = express();
