@@ -281,10 +281,10 @@ app.get('/api/youtube', async (req, res) => {
         .outputOptions('-ac 1')
         .outputOptions('-acodec pcm_s8')
         .output(ffmpegStream)
-        .on('end', () => {
+        .on('end', async () => {
           const dfpwmData = encoder.encode(pcmData)
           const dfpwmStream = fs.createWriteStream(dfpwmPath)
-          dfpwmStream.write(dfpwmData)
+          await dfpwmStream.writeFile(dfpwmData)
 
           res.set("Content-Disposition", `attachment; filename="${videoId}.dfpwm"`);
           res.send(dfpwmPath)
