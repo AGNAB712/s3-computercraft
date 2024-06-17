@@ -12,25 +12,9 @@ const ytdl = require("ytdl-core");
 const Stream = require('stream');
 const path = require('path')
 const fetch = require('node-fetch');
-
-
 const YTDlpWrap = require('yt-dlp-wrap').default;
-let ytDlpWrap
-async function setupYtdpl() {
-  console.log('setting up ytdpl')
-  try {
-    let githubReleasesData = await YTDlpWrap.getGithubReleases(1, 5);
-    await YTDlpWrap.downloadFromGithub(
-        'ytdl/yt-dlp-all'
-    );
-    console.log('ytdpl downloaded')
-  } catch (e) {
-    console.error(e)
-  }
-  ytDlpWrap = new YTDlpWrap('ytdl/yt-dlp-all');
-}
+const ytDlpWrap = new YTDlpWrap('ytdl/yt-dlp-linux');
 
-setupYtdpl()
 
 const app = express();
 
