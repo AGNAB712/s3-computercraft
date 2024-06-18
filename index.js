@@ -277,11 +277,12 @@ app.get('/api/test', async (req, res) => {
     .output(ffmpegStream)
     .on('end', async () => {
       const dfpwmData = encoder.encode(pcmData)
+      console.log(pcmData)
       const dfpwmStream = fs.createWriteStream(dfpwmPath)
       dfpwmStream.write(dfpwmData)
 
       res.set("Content-Disposition", `attachment; filename="${id}.dfpwm"`);
-      res.sendFile(dfpwmPath)
+      res.send(dfpwmData)
     })
     .on('error', (err) => {
       console.error('Error during conversion:', err);
