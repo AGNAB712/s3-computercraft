@@ -304,7 +304,7 @@ app.get('/api/test', async (req, res) => {
     .output(ffmpegStream)
     .on('end', async () => {
       const dfpwmData = encoder.encode(pcmData)
-      console.log(pcmData, fs.existsSync(`/opt/render/project/src/yt/`))
+      console.log(pcmData, fs.existsSync(`/opt/render/project/src/yt/${id}.dfpwm`))
       await fs.writeFile(dfpwmPath, dfpwmData, err => {
         if (err) {
           console.error(err)
@@ -315,6 +315,7 @@ app.get('/api/test', async (req, res) => {
           res.send(dfpwmData)
         }
       })
+      console.log("does it exist?", fs.existsSync(dfpwmData))
 
       
     })
