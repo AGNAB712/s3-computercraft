@@ -257,7 +257,7 @@ app.get('/api/test', async (req, res) => {
 
   const passThroughStream = new Stream.PassThrough();
 
-  console.log(fs.existsSync(dfpwmPath), dfpwmPath, __dirname)
+  console.log(fs.existsSync(dfpwmPath), dfpwmPath, __dirname, fs.existsSync(path.join(__dirname, `/ytdl/yt-dlp`)))
   if (!fs.existsSync(dfpwmPath)) {
   sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
   let readableStream = ytDlpWrap.execStream([
