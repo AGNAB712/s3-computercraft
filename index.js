@@ -250,7 +250,8 @@ app.get('/api/test', async (req, res) => {
 
   console.log('i noticed')
 
-  if (!path.join(__dirname, `yt`)) {
+  if (!fs.existsSync(path.join(__dirname, `yt`))) {
+    console.log('i did it dad are you proud of me')
     await fs.mkdir(path.join(__dirname, `yt`));
   }
 
