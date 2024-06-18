@@ -240,7 +240,7 @@ app.get('/api/test', async (req, res) => {
 
   const id = req.query?.id
 
-  const dfpwmPath = path.join(__dirname, `/yt/${videoId}.dfpwm`)
+  const dfpwmPath = path.join(__dirname, `/yt/${id}.dfpwm`)
 
   if (!fs.existsSync(dfpwmPath)) {
   sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
@@ -288,7 +288,7 @@ app.get('/api/test', async (req, res) => {
     .run();
   } else {
     sendWebhook(`YOUTUBE API INTERACTION\nSending dfpwm: ${url}`)
-    res.set("Content-Disposition", `attachment; filename="${videoId}.dfpwm"`);
+    res.set("Content-Disposition", `attachment; filename="${id}.dfpwm"`);
     res.send(dfpwmPath)
   }
 
