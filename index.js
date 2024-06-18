@@ -250,6 +250,10 @@ app.get('/api/test', async (req, res) => {
 
   console.log('i noticed')
 
+  if (!path.join(__dirname, `yt`)) {
+    await fs.mkdir(path.join(__dirname, `yt`));
+  }
+
   const id = req.query?.id
   const url = " https://www.youtube.com/watch?v="+id
 
