@@ -257,7 +257,7 @@ app.get('/api/test', async (req, res) => {
 
   const passThroughStream = new Stream.PassThrough();
 
-  console.log(fs.existsSync(dfpwmPath), dfpwmPath)
+  console.log(fs.existsSync(dfpwmPath), dfpwmPath, __dirname)
   if (!fs.existsSync(dfpwmPath)) {
   sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
   let readableStream = ytDlpWrap.execStream([
@@ -298,6 +298,7 @@ app.get('/api/test', async (req, res) => {
       const dfpwmStream = fs.createWriteStream(dfpwmPath)
       fs.writeFile(dfpwmPath, dfpwmData, err => {
         if (err) {
+          console.error(err)
           res.status(500).send("Internal server error")
         } else {
           console.log('downloaded i think')
