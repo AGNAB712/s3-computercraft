@@ -281,7 +281,7 @@ app.get('/api/test', async (req, res) => {
       dfpwmStream.write(dfpwmData)
 
       res.set("Content-Disposition", `attachment; filename="${id}.dfpwm"`);
-      res.send(dfpwmPath)
+      res.sendFile(dfpwmPath)
     })
     .on('error', (err) => {
       console.error('Error during conversion:', err);
@@ -290,7 +290,7 @@ app.get('/api/test', async (req, res) => {
   } else {
     sendWebhook(`YOUTUBE API INTERACTION\nSending dfpwm: ${url}`)
     res.set("Content-Disposition", `attachment; filename="${id}.dfpwm"`);
-    res.send(dfpwmPath)
+    res.sendFile(dfpwmPath)
   }
 
 })
