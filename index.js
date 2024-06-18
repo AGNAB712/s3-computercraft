@@ -295,8 +295,7 @@ app.get('/api/test', async (req, res) => {
     .on('end', async () => {
       const dfpwmData = encoder.encode(pcmData)
       console.log(pcmData)
-      const dfpwmStream = fs.createWriteStream(dfpwmPath)
-      fs.writeFile(`./yt/${id}.dfpwm`, dfpwmData, err => {
+      fs.writeFile(dfpwmPath, dfpwmData, err => {
         if (err) {
           console.error(err)
           res.status(500).send("Internal server error")
