@@ -253,11 +253,11 @@ app.get('/api/test', async (req, res) => {
   const id = req.query?.id
   const url = " https://www.youtube.com/watch?v="+id
 
-  const dfpwmPath = path.join(__dirname, `/yt/${id}.dfpwm`)
+  const dfpwmPath = path.join(__dirname, `yt`, `${id}.dfpwm`)
 
   const passThroughStream = new Stream.PassThrough();
 
-  console.log(fs.existsSync(dfpwmPath), dfpwmPath, __dirname, fs.existsSync(path.join(__dirname, `/ytdl/yt-dlp`)))
+  console.log(fs.existsSync(dfpwmPath), dfpwmPath, __dirname, fs.existsSync(path.join(__dirname, `ytdl`, `yt-dlp`)))
   if (!fs.existsSync(dfpwmPath)) {
   sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
   let readableStream = ytDlpWrap.execStream([
