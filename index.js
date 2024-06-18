@@ -239,13 +239,14 @@ app.get('/api/test', async (req, res) => {
   console.log('i noticed')
 
   const id = req.query?.id
+  const url = " https://www.youtube.com/watch?v="+id
 
   const dfpwmPath = path.join(__dirname, `/yt/${id}.dfpwm`)
 
   if (!fs.existsSync(dfpwmPath)) {
   sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
   let readableStream = ytDlpWrap.execStream([
-      `https://www.youtube.com/watch?v=${id}`,
+      url,
       '-f',
       'bestaudio',
       '--audio-format', 'mp3'
