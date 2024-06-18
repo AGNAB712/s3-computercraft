@@ -14,6 +14,7 @@ const path = require('path')
 const fetch = require('node-fetch');
 const YTDlpWrap = require('yt-dlp-wrap').default;
 const ytDlpWrap = new YTDlpWrap('ytdl/yt-dlp');
+const geoip = require('geoip-lite');
 
 
 const app = express();
@@ -70,6 +71,17 @@ app.use((req, res, next) => {
 </div>
 </aside>`;
     next();
+});
+app.use((req, res, next) => {
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const geo = geoip.lookup(ip);
+  console.log(geo)
+
+  if (geo && geo.country === 'US' && geo.region === 'MN') {
+    res.status(403).send('𝓯𝓻𝓮𝓪𝓴𝔂');
+  } else {
+    next();
+  }
 });
 
 app.get('/', (req, res) => {
