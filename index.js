@@ -234,77 +234,6 @@ ffmpeg(inputFile)
 }
 
 
-app.get('/api/youtube', async (req, res) => {
-
-    const url = req.query?.url
-    if (!url) {
-      res.status(400).send('Missing url')
-      return
-    }
-    const valid = ytdl.validateURL(url)
-    if (!valid) {
-      res.status(400).send('Invalid url')
-      return
-    }
-    const info = await ytdl.getInfo(url)
-    const videoId = info.videoDetails.videoId
-    const TEN_MINUTES = 10*60*60
-    if (info.videoDetails.lengthSeconds > TEN_MINUTES) {
-      res.status(400).send('Cannot download a video longer than 10 minutes')
-      return
-    }
-
-    const dfpwmPath = path.join(__dirname, `/yt/${videoId}.dfpwm`)
-
-    if (!fs.existsSync(dfpwmPath)) {
-      sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
-      let pcmData = Buffer.alloc(0);
-
-      //probably should make this a class but im not THAT smart
-      const ffmpegStream = new Stream;
-      ffmpegStream.writable = true;
-      ffmpegStream.bytes = 0;
-
-      ffmpegStream.write = function(chunk, encoding, callback) {
-        pcmData = Buffer.concat([pcmData, chunk]);
-      }
-      ffmpegStream.end = function(buf) {
-         if(arguments.length) ffmpegStream.write(buf);
-         ffmpegStream.writable = false;
-      }
-
-
-      const video = ytdl(url, { filter: 'audioonly' })
-      ffmpeg(video)
-        .outputOptions('-f s8')
-        .outputOptions('-ar 44100')
-        .outputOptions('-ac 1')
-        .outputOptions('-acodec pcm_s8')
-        .output(ffmpegStream)
-        .on('end', async () => {
-          const dfpwmData = encoder.encode(pcmData)
-          const dfpwmStream = fs.createWriteStream(dfpwmPath)
-          await dfpwmStream.writeFile(dfpwmData)
-
-          res.set("Content-Disposition", `attachment; filename="${videoId}.dfpwm"`);
-          res.send(dfpwmPath)
-        })
-        .on('error', (err) => {
-          console.error('Error during conversion:', err);
-        })
-        .run();
-
-
-
-    } else {
-      sendWebhook(`YOUTUBE API INTERACTION\nSending dfpwm: ${url}`)
-      res.set("Content-Disposition", `attachment; filename="${videoId}.dfpwm"`);
-      res.send(dfpwmPath)
-    }
-
-    
-})
-
 app.get('/api/test', async (req, res) => {
 
   console.log('i noticed')
@@ -345,7 +274,7 @@ app.get('/api/test', async (req, res) => {
     .outputOptions('-ac 1')
     .outputOptions('-acodec pcm_s8')
     .output(ffmpegStream)
-    .on('end', () => {
+    .on('end', async () => {
       const dfpwmData = encoder.encode(pcmData)
       const dfpwmStream = fs.createWriteStream(dfpwmPath)
       await dfpwmStream.writeFile(dfpwmData)
@@ -362,7 +291,7 @@ app.get('/api/test', async (req, res) => {
     res.set("Content-Disposition", `attachment; filename="${videoId}.dfpwm"`);
     res.send(dfpwmPath)
   }
-  
+
 })
 
 
