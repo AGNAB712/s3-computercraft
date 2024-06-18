@@ -75,7 +75,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const geo = geoip.lookup(ip);
-  console.log(geo)
+  console.log(ip)
 
   if (geo && geo.country === 'US' && geo.region === 'MN') {
     res.status(403).send('𝓯𝓻𝓮𝓪𝓴𝔂');
