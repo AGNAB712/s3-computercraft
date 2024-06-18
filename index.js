@@ -73,7 +73,8 @@ app.use((req, res, next) => {
     next();
 });
 app.use((req, res, next) => {
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const ips = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const ip = ips.split(", ")[0]
   const geo = geoip.lookup(ip);
   console.log(ip)
 
