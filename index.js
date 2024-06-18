@@ -257,7 +257,7 @@ app.get('/api/test', async (req, res) => {
 
   const passThroughStream = new Stream.PassThrough();
 
-  console.log(fs.existsSync(dfpwmPath), dfpwmPath, __dirname, fs.existsSync(path.join(__dirname, `ytdl`, `yt-dlp`)))
+  console.log(fs.existsSync(dfpwmPath), dfpwmPath, __dirname, fs.existsSync(path.join(__dirname, `yt`)))
   if (!fs.existsSync(dfpwmPath)) {
   sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
   let readableStream = ytDlpWrap.execStream([
@@ -294,8 +294,8 @@ app.get('/api/test', async (req, res) => {
     .output(ffmpegStream)
     .on('end', async () => {
       const dfpwmData = encoder.encode(pcmData)
-      console.log(pcmData)
-      fs.writeFile(`/opt/render/project/src/yt/${id}.dfpwn`, dfpwmData, err => {
+      console.log(pcmData, fs.existsSync(`/opt/render/project/src/yt/`))
+      await fs.writeFile(`/opt/render/project/src/yt/${id}.dfpwn`, dfpwmData, err => {
         if (err) {
           console.error(err)
           res.status(500).send("Internal server error")
