@@ -76,9 +76,8 @@ app.use((req, res, next) => {
   const ips = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const ip = ips.split(", ")[0]
   const geo = geoip.lookup(ip);
-  console.log(ip)
 
-  if (geo && geo.country === 'US' && geo.region === 'MN') {
+  if (geo && geo.country === 'US' && geo.region === 'TN') {
     res.status(403).send('𝓯𝓻𝓮𝓪𝓴𝔂');
   } else {
     next();
@@ -256,15 +255,20 @@ app.get('/api/test', async (req, res) => {
 
   const dfpwmPath = path.join(__dirname, `/yt/${id}.dfpwm`)
 
+  const passThroughStream = new Stream.PassThrough();
+
+  console.log(fs.existsSync(dfpwmPath), dfpwmPath)
   if (!fs.existsSync(dfpwmPath)) {
   sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
   let readableStream = ytDlpWrap.execStream([
       url,
-      '-f',
-      'bestaudio',
-      '--audio-format', 'mp3'
+      '-o',
+      '-',
   ])
-  .on('close', () => sendWebhook("Downloaded successfully"));
+  .on('end', () => sendWebhook("Downloaded successfully"));
+
+  //don't ask me why this works execStream is so fucked
+  readableStream.pipe(passThroughStream)
 
   let pcmData = Buffer.alloc(0);
 
@@ -282,7 +286,7 @@ app.get('/api/test', async (req, res) => {
   }
 
 
-  ffmpeg(readableStream)
+  ffmpeg(passThroughStream)
     .outputOptions('-f s8')
     .outputOptions('-ar 44100')
     .outputOptions('-ac 1')
@@ -292,10 +296,17 @@ app.get('/api/test', async (req, res) => {
       const dfpwmData = encoder.encode(pcmData)
       console.log(pcmData)
       const dfpwmStream = fs.createWriteStream(dfpwmPath)
-      dfpwmStream.write(dfpwmData)
+      fs.writeFile(dfpwmPath, dfpwmData, err => {
+        if (err) {
+          res.status(500).send("Internal server error")
+        } else {
+          console.log('downloaded i think')
+          res.set("Content-Disposition", `attachment; filename="${id}.dfpwm"`);
+          res.send(dfpwmData)
+        }
+      })
 
-      res.set("Content-Disposition", `attachment; filename="${id}.dfpwm"`);
-      res.send(dfpwmData)
+      
     })
     .on('error', (err) => {
       console.error('Error during conversion:', err);
