@@ -278,7 +278,7 @@ app.get('/api/test', async (req, res) => {
     .on('end', async () => {
       const dfpwmData = encoder.encode(pcmData)
       const dfpwmStream = fs.createWriteStream(dfpwmPath)
-      await dfpwmStream.writeFile(dfpwmData)
+      dfpwmStream.write(dfpwmData)
 
       res.set("Content-Disposition", `attachment; filename="${id}.dfpwm"`);
       res.send(dfpwmPath)
