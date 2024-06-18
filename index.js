@@ -305,7 +305,7 @@ app.get('/api/test', async (req, res) => {
     .on('end', async () => {
       const dfpwmData = encoder.encode(pcmData)
       console.log(pcmData, fs.existsSync(`/opt/render/project/src/yt/`))
-      await fs.writeFile(`/opt/render/project/src/yt/${id}.dfpwn`, dfpwmData, err => {
+      await fs.writeFile(dfpwmPath, dfpwmData, err => {
         if (err) {
           console.error(err)
           res.status(500).send("Internal server error")
