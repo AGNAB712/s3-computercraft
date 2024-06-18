@@ -311,24 +311,17 @@ app.get('/api/test', async (req, res) => {
 
   const id = req.query?.id
 
+  const dfpwmPath = path.join(__dirname, `/yt/${videoId}.dfpwm`)
+
+  if (!fs.existsSync(dfpwmPath)) {
+  sendWebhook(`YOUTUBE API INTERACTION\nDownloading video: ${url}`)
   let readableStream = ytDlpWrap.execStream([
       `https://www.youtube.com/watch?v=${id}`,
       '-f',
       'bestaudio',
       '--audio-format', 'mp3'
   ])
-  .on('progress', (progress) =>
-          console.log(
-              progress.percent,
-              progress.totalSize,
-              progress.currentSpeed,
-              progress.eta
-          )
-      )
-  .on('close', () => console.log('all done'));
-
-  const dfpwmPath = path.join(__dirname, `/yt/${id}.dfpwm`)
-
+  .on('close', () => sendWebhook("Downloaded successfully"));
 
   let pcmData = Buffer.alloc(0);
 
@@ -355,15 +348,21 @@ app.get('/api/test', async (req, res) => {
     .on('end', () => {
       const dfpwmData = encoder.encode(pcmData)
       const dfpwmStream = fs.createWriteStream(dfpwmPath)
-      dfpwmStream.write(dfpwmData)
+      await dfpwmStream.writeFile(dfpwmData)
 
-      res.set("Content-Disposition", `attachment; filename="amazing.dfpwm"`);
+      res.set("Content-Disposition", `attachment; filename="${id}.dfpwm"`);
       res.send(dfpwmPath)
     })
     .on('error', (err) => {
       console.error('Error during conversion:', err);
     })
     .run();
+  } else {
+    sendWebhook(`YOUTUBE API INTERACTION\nSending dfpwm: ${url}`)
+    res.set("Content-Disposition", `attachment; filename="${videoId}.dfpwm"`);
+    res.send(dfpwmPath)
+  }
+  
 })
 
 
