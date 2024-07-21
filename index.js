@@ -72,7 +72,7 @@ app.use((req, res, next) => {
 </aside>`;
     next();
 });
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
   const ips = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const ip = ips.split(", ")[0]
   const geo = geoip.lookup(ip);
@@ -82,7 +82,7 @@ app.use((req, res, next) => {
   } else {
     next();
   }
-});
+});*/
 
 app.get('/', (req, res) => {
   res.render('home.ejs', { sidebar: res.locals.sidebar });
@@ -297,10 +297,10 @@ app.get('/api/test', async (req, res) => {
 
 
   ffmpeg(passThroughStream)
-    .outputOptions('-f s8')
-    .outputOptions('-ar 44100')
-    .outputOptions('-ac 1')
-    .outputOptions('-acodec pcm_s8')
+  .outputOptions('-f s8')
+  .outputOptions('-ar 44100')
+  .outputOptions('-ac 1')
+  .outputOptions('-acodec pcm_s8')
     .output(ffmpegStream)
     .on('end', async () => {
       const dfpwmData = encoder.encode(pcmData)
